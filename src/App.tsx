@@ -196,10 +196,10 @@ function App() {
 
   // Memoize audio elements to prevent re-creation on every render
   const audioFiles = useMemo(() => ({
-    background: createAudio('/audio/background.mp3', true),
-    correct: createAudio('/audio/correct.mp3'),
-    incorrect: createAudio('/audio/incorrect.mp3'),
-    // gameover: createAudio('/audio/gameover.mp3') // Optional
+    background: createAudio(`${process.env.PUBLIC_URL}/audio/background.mp3`, true),
+    correct: createAudio(`${process.env.PUBLIC_URL}/audio/correct.mp3`),
+    incorrect: createAudio(`${process.env.PUBLIC_URL}/audio/incorrect.mp3`),
+    // gameover: createAudio(`${process.env.PUBLIC_URL}/audio/gameover.mp3`) // Optional
   }), []);
 
   // Function to play a sound effect, respecting mute state
