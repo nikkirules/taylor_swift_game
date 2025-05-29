@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/taylor_swift_game/static/css/main.a28cb7a7.css",
-    "main.js": "/taylor_swift_game/static/js/main.60d2c86d.js",
+    "main.js": "/taylor_swift_game/static/js/main.7d150368.js",
     "static/js/453.97c2ef4f.chunk.js": "/taylor_swift_game/static/js/453.97c2ef4f.chunk.js",
     "index.html": "/taylor_swift_game/index.html",
     "main.a28cb7a7.css.map": "/taylor_swift_game/static/css/main.a28cb7a7.css.map",
-    "main.60d2c86d.js.map": "/taylor_swift_game/static/js/main.60d2c86d.js.map",
+    "main.7d150368.js.map": "/taylor_swift_game/static/js/main.7d150368.js.map",
     "453.97c2ef4f.chunk.js.map": "/taylor_swift_game/static/js/453.97c2ef4f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a28cb7a7.css",
-    "static/js/main.60d2c86d.js"
+    "static/js/main.7d150368.js"
   ]
 }
