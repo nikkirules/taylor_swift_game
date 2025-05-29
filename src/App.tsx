@@ -141,7 +141,7 @@ const initialQuestionsData: (Omit<Question, 'options'> & { allOptions: string[] 
     isVaultTrack: false
   },
   {
-    song: "Is It Over Now? (Taylor's Version) [From The Vault]",
+    song: "Is It Over Now? (Taylor's Version)",
     correctAlbum: "1989 (Taylor's Version)",
     allOptions: ["1989 (Taylor's Version)", "Red (Taylor's Version)", "Midnights", "Lover", "Speak Now (Taylor's Version)", "Fearless (Taylor's Version)"],
     isVaultTrack: true
@@ -177,13 +177,7 @@ const initialQuestionsData: (Omit<Question, 'options'> & { allOptions: string[] 
     isVaultTrack: false
   },
   {
-    song: "Suburban Legends (Taylor's Version) [From The Vault]",
-    correctAlbum: "1989 (Taylor's Version)",
-    allOptions: ["1989 (Taylor's Version)", "Midnights", "Lover", "Speak Now (Taylor's Version)", "Red (Taylor's Version)", "The Tortured Poets Department"],
-    isVaultTrack: true
-  },
-  {
-    song: "I Can See You (Taylor's Version) [From The Vault]",
+    song: "I Can See You (Taylor's Version)",
     correctAlbum: "Speak Now (Taylor's Version)",
     allOptions: ["Speak Now (Taylor's Version)", "Fearless (Taylor's Version)", "1989 (Taylor's Version)", "Red (Taylor's Version)", "Midnights", "Lover"],
     isVaultTrack: true
