@@ -2,10 +2,10 @@ import React, { useEffect, useMemo } from 'react';
 
 const TaylorBackground: React.FC = () => {
   const taylorImages = useMemo(() => [
-    '/images/taylor/fearless.jpg',  // Fearless era image
-    '/images/taylor/red.jpg',       // Red era image
-    '/images/taylor/1989.jpg',      // 1989 era image
-    '/images/taylor/midnights.jpg'  // Midnights era image
+    `${process.env.PUBLIC_URL}/images/taylor/fearless.jpg`,
+    `${process.env.PUBLIC_URL}/images/taylor/red.jpg`,
+    `${process.env.PUBLIC_URL}/images/taylor/1989.jpg`,
+    `${process.env.PUBLIC_URL}/images/taylor/midnights.jpg`
   ], []);
 
   useEffect(() => {
@@ -16,11 +16,10 @@ const TaylorBackground: React.FC = () => {
   return (
     <div className="taylor-background">
       {taylorImages.map((image, index) => {
-        const fullPath = image;
         return (
           <img
             key={index}
-            src={fullPath}
+            src={image}
             alt={`Taylor Swift Era ${index + 1}`}
             className="taylor-image"
           />
