@@ -15,6 +15,16 @@ interface HighScore {
   date: string;
 }
 
+// Helper function to shuffle an array (Fisher-Yates shuffle)
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
 // Helper function to create and configure an audio element
 const createAudio = (src: string, loop = false) => {
   const audio = new Audio(src);
@@ -23,164 +33,177 @@ const createAudio = (src: string, loop = false) => {
 };
 
 function App() {
-  const questions: Question[] = [
+  const initialQuestions: (Omit<Question, 'options'> & { allOptions: string[] })[] = [
+    {
+      song: "Tim McGraw",
+      correctAlbum: "Taylor Swift",
+      allOptions: ["Taylor Swift", "Fearless", "Speak Now", "Red", "1989", "Reputation"],
+      isVaultTrack: false
+    },
     {
       song: "Anti-Hero",
       correctAlbum: "Midnights",
-      options: ["Midnights", "Folklore", "Evermore", "Red (Taylor's Version)", "Lover", "1989"],
+      allOptions: ["Midnights", "Folklore", "Evermore", "Red (Taylor's Version)", "Lover", "1989"],
       isVaultTrack: false
     },
     {
       song: "Mr. Perfectly Fine",
       correctAlbum: "Fearless (Taylor's Version)",
-      options: ["Fearless (Taylor's Version)", "Red (Taylor's Version)", "Speak Now (Taylor's Version)", "1989 (Taylor's Version)", "Midnights", "Lover"],
+      allOptions: ["Fearless (Taylor's Version)", "Red (Taylor's Version)", "Speak Now (Taylor's Version)", "1989 (Taylor's Version)", "Midnights", "Lover"],
       isVaultTrack: true
     },
     {
       song: "I Bet You Think About Me",
       correctAlbum: "Red (Taylor's Version)",
-      options: ["Red (Taylor's Version)", "Fearless (Taylor's Version)", "Speak Now (Taylor's Version)", "1989 (Taylor's Version)", "Evermore", "Reputation"],
+      allOptions: ["Red (Taylor's Version)", "Fearless (Taylor's Version)", "Speak Now (Taylor's Version)", "1989 (Taylor's Version)", "Evermore", "Reputation"],
       isVaultTrack: true
     },
     {
       song: "All Too Well (10 Minute Version)",
       correctAlbum: "Red (Taylor's Version)",
-      options: ["Red (Taylor's Version)", "Fearless (Taylor's Version)", "Speak Now (Taylor's Version)", "1989 (Taylor's Version)", "Folklore", "Midnights"],
+      allOptions: ["Red (Taylor's Version)", "Fearless (Taylor's Version)", "Speak Now (Taylor's Version)", "1989 (Taylor's Version)", "Folklore", "Midnights"],
       isVaultTrack: true
     },
     {
       song: "You're Losing Me",
       correctAlbum: "Midnights (3am Edition)",
-      options: ["Midnights (3am Edition)", "Evermore", "Folklore", "Red (Taylor's Version)", "1989 (Taylor's Version)", "Speak Now (Taylor's Version)"],
+      allOptions: ["Midnights (3am Edition)", "Evermore", "Folklore", "Red (Taylor's Version)", "1989 (Taylor's Version)", "Speak Now (Taylor's Version)"],
       isVaultTrack: true
     },
     {
       song: "Now That We Don't Talk",
       correctAlbum: "1989 (Taylor's Version)",
-      options: ["1989 (Taylor's Version)", "Speak Now (Taylor's Version)", "Red (Taylor's Version)", "Fearless (Taylor's Version)", "Midnights", "Lover"],
+      allOptions: ["1989 (Taylor's Version)", "Speak Now (Taylor's Version)", "Red (Taylor's Version)", "Fearless (Taylor's Version)", "Midnights", "Lover"],
       isVaultTrack: true
     },
     {
       song: "Slut!",
       correctAlbum: "1989 (Taylor's Version)",
-      options: ["1989 (Taylor's Version)", "Midnights", "Speak Now (Taylor's Version)", "Lover", "Reputation", "Red (Taylor's Version)"],
+      allOptions: ["1989 (Taylor's Version)", "Midnights", "Speak Now (Taylor's Version)", "Lover", "Reputation", "Red (Taylor's Version)"],
       isVaultTrack: true
     },
     {
       song: "Say Don't Go",
       correctAlbum: "1989 (Taylor's Version)",
-      options: ["1989 (Taylor's Version)", "Speak Now (Taylor's Version)", "Fearless (Taylor's Version)", "Red (Taylor's Version)", "Evermore", "Folklore"],
+      allOptions: ["1989 (Taylor's Version)", "Speak Now (Taylor's Version)", "Fearless (Taylor's Version)", "Red (Taylor's Version)", "Evermore", "Folklore"],
       isVaultTrack: true
     },
     {
       song: "Timeless",
       correctAlbum: "Speak Now (Taylor's Version)",
-      options: ["Speak Now (Taylor's Version)", "1989 (Taylor's Version)", "Red (Taylor's Version)", "Fearless (Taylor's Version)", "Midnights", "Lover"],
+      allOptions: ["Speak Now (Taylor's Version)", "1989 (Taylor's Version)", "Red (Taylor's Version)", "Fearless (Taylor's Version)", "Midnights", "Lover"],
       isVaultTrack: true
     },
     {
       song: "Castles Crumbling",
       correctAlbum: "Speak Now (Taylor's Version)",
-      options: ["Speak Now (Taylor's Version)", "Evermore", "Folklore", "Red (Taylor's Version)", "1989 (Taylor's Version)", "Fearless (Taylor's Version)"],
+      allOptions: ["Speak Now (Taylor's Version)", "Evermore", "Folklore", "Red (Taylor's Version)", "1989 (Taylor's Version)", "Fearless (Taylor's Version)"],
       isVaultTrack: true
     },
     {
       song: "Fortnight (feat. Post Malone)",
       correctAlbum: "The Tortured Poets Department",
-      options: ["The Tortured Poets Department", "Midnights", "Folklore", "Lover", "Reputation", "1989"],
+      allOptions: ["The Tortured Poets Department", "Midnights", "Folklore", "Lover", "Reputation", "1989"],
       isVaultTrack: false
     },
     {
       song: "Cruel Summer",
       correctAlbum: "Lover",
-      options: ["Lover", "Reputation", "1989", "Red (Taylor's Version)", "Midnights", "Speak Now"],
+      allOptions: ["Lover", "Reputation", "1989", "Red (Taylor's Version)", "Midnights", "Speak Now"],
       isVaultTrack: false
     },
     {
       song: "cardigan",
       correctAlbum: "folklore",
-      options: ["folklore", "evermore", "Midnights", "Lover", "Red", "Speak Now (Taylor's Version)"],
+      allOptions: ["folklore", "evermore", "Midnights", "Lover", "Red", "Speak Now (Taylor's Version)"],
       isVaultTrack: false
     },
     {
       song: "willow",
       correctAlbum: "evermore",
-      options: ["evermore", "folklore", "Midnights", "Lover", "Fearless (Taylor's Version)", "Red (Taylor's Version)"],
+      allOptions: ["evermore", "folklore", "Midnights", "Lover", "Fearless (Taylor's Version)", "Red (Taylor's Version)"],
       isVaultTrack: false
     },
     {
       song: "Look What You Made Me Do",
       correctAlbum: "Reputation",
-      options: ["Reputation", "1989", "Lover", "Midnights", "Speak Now", "Red"],
+      allOptions: ["Reputation", "1989", "Lover", "Midnights", "Speak Now", "Red"],
       isVaultTrack: false
     },
     {
       song: "Love Story (Taylor's Version)",
       correctAlbum: "Fearless (Taylor's Version)",
-      options: ["Fearless (Taylor's Version)", "Speak Now (Taylor's Version)", "Red (Taylor's Version)", "Taylor Swift", "1989", "Lover"],
+      allOptions: ["Fearless (Taylor's Version)", "Speak Now (Taylor's Version)", "Red (Taylor's Version)", "Taylor Swift", "1989", "Lover"],
       isVaultTrack: false
     },
     {
       song: "I Can Do It With a Broken Heart",
       correctAlbum: "The Tortured Poets Department",
-      options: ["The Tortured Poets Department", "Midnights (3am Edition)", "evermore", "Lover", "reputation", "1989 (Taylor's Version)"],
+      allOptions: ["The Tortured Poets Department", "Midnights (3am Edition)", "evermore", "Lover", "reputation", "1989 (Taylor's Version)"],
       isVaultTrack: false
     },
     {
       song: "You Belong With Me (Taylor's Version)",
       correctAlbum: "Fearless (Taylor's Version)",
-      options: ["Fearless (Taylor's Version)", "Taylor Swift", "Speak Now", "Red", "1989", "Lover"],
+      allOptions: ["Fearless (Taylor's Version)", "Taylor Swift", "Speak Now", "Red", "1989", "Lover"],
       isVaultTrack: false
     },
     {
       song: "Is It Over Now? (Taylor's Version) [From The Vault]",
       correctAlbum: "1989 (Taylor's Version)",
-      options: ["1989 (Taylor's Version)", "Red (Taylor's Version)", "Midnights", "Lover", "Speak Now (Taylor's Version)", "Fearless (Taylor's Version)"],
+      allOptions: ["1989 (Taylor's Version)", "Red (Taylor's Version)", "Midnights", "Lover", "Speak Now (Taylor's Version)", "Fearless (Taylor's Version)"],
       isVaultTrack: true
     },
     {
       song: "Enchanted (Taylor's Version)",
       correctAlbum: "Speak Now (Taylor's Version)",
-      options: ["Speak Now (Taylor's Version)", "Fearless (Taylor's Version)", "Red", "Lover", "1989", "Midnights"],
+      allOptions: ["Speak Now (Taylor's Version)", "Fearless (Taylor's Version)", "Red", "Lover", "1989", "Midnights"],
       isVaultTrack: false
     },
     {
       song: "Don't Blame Me",
       correctAlbum: "Reputation",
-      options: ["Reputation", "Lover", "1989 (Taylor's Version)", "Midnights", "Folklore", "Evermore"],
+      allOptions: ["Reputation", "Lover", "1989 (Taylor's Version)", "Midnights", "Folklore", "Evermore"],
       isVaultTrack: false
     },
     {
       song: "The Story Of Us (Taylor's Version)",
       correctAlbum: "Speak Now (Taylor's Version)",
-      options: ["Speak Now (Taylor's Version)", "Red (Taylor's Version)", "Fearless (Taylor's Version)", "1989", "Lover", "Midnights"],
+      allOptions: ["Speak Now (Taylor's Version)", "Red (Taylor's Version)", "Fearless (Taylor's Version)", "1989", "Lover", "Midnights"],
       isVaultTrack: false
     },
     {
       song: "My Boy Only Breaks His Favorite Toys",
       correctAlbum: "The Tortured Poets Department",
-      options: ["The Tortured Poets Department", "Midnights", "Lover", "evermore", "reputation", "1989 (Taylor's Version)"],
+      allOptions: ["The Tortured Poets Department", "Midnights", "Lover", "evermore", "reputation", "1989 (Taylor's Version)"],
       isVaultTrack: false
     },
     {
       song: "Hits Different",
       correctAlbum: "Midnights (Target Exclusive)",
-      options: ["Midnights (Target Exclusive)", "Midnights (3am Edition)", "Lover", "1989 (Taylor's Version)", "Folklore", "The Tortured Poets Department"],
+      allOptions: ["Midnights (Target Exclusive)", "Midnights (3am Edition)", "Lover", "1989 (Taylor's Version)", "Folklore", "The Tortured Poets Department"],
       isVaultTrack: false
     },
     {
       song: "Suburban Legends (Taylor's Version) [From The Vault]",
       correctAlbum: "1989 (Taylor's Version)",
-      options: ["1989 (Taylor's Version)", "Midnights", "Lover", "Speak Now (Taylor's Version)", "Red (Taylor's Version)", "The Tortured Poets Department"],
+      allOptions: ["1989 (Taylor's Version)", "Midnights", "Lover", "Speak Now (Taylor's Version)", "Red (Taylor's Version)", "The Tortured Poets Department"],
       isVaultTrack: true
     },
     {
       song: "I Can See You (Taylor's Version) [From The Vault]",
       correctAlbum: "Speak Now (Taylor's Version)",
-      options: ["Speak Now (Taylor's Version)", "Fearless (Taylor's Version)", "1989 (Taylor's Version)", "Red (Taylor's Version)", "Midnights", "Lover"],
+      allOptions: ["Speak Now (Taylor's Version)", "Fearless (Taylor's Version)", "1989 (Taylor's Version)", "Red (Taylor's Version)", "Midnights", "Lover"],
       isVaultTrack: true
     }
   ];
+
+  const questions: Question[] = useMemo(() => {
+    return initialQuestions.map(q => ({
+      ...q,
+      options: shuffleArray(q.allOptions) // Shuffle options here
+    }));
+  }, []); // Removed initialQuestions from dependency array as it's stable
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
